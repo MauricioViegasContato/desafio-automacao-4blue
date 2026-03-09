@@ -1,0 +1,470 @@
+{
+  "name": "desafio-automacao-4blue",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e7c0aa9f-d18b-4a32-8cc8-6f78a426ebb4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "338e5857-8509-4ea1-a2d2-2b12576ea848",
+      "name": "Webhook",
+      "webhookId": "e7c0aa9f-d18b-4a32-8cc8-6f78a426ebb4"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.curso }}",
+                    "rightValue": "Tech",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "46b489d1-cf5b-4911-bef1-7b05b8264081"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "715399f8-3689-4242-9c5a-262fa618ff0e",
+                    "leftValue": "={{ $('Webhook').item.json.body.curso }}",
+                    "rightValue": "Business",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "8ffade74-968d-4141-97cf-1e109cd8c2ab",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "sendTo": "={{ $('Webhook').item.json.body.email }}",
+        "subject": "Sua matrícula foi confirmada!",
+        "message": "=Olá ,{{ $('Tratamento').item.json.nome_tratado }} sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        768,
+        -256
+      ],
+      "id": "3ddb6959-265c-4766-afe3-d106c771f9dd",
+      "name": "Send a message",
+      "webhookId": "8110c866-35ac-42a1-a5ce-0101a6fb1240",
+      "credentials": {
+        "googleApi": {
+          "id": "zq2CwThNQgZR7Mj3",
+          "name": "Google Service Account account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "sendTo": "={{ $('Webhook').item.json.body.email }}",
+        "subject": "Sua matrícula foi confirmada!",
+        "message": "=Olá ,{{ $('Tratamento').item.json.nome_tratado }} sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        768,
+        240
+      ],
+      "id": "bc705095-41fa-4b7b-9e3c-c626896939e3",
+      "name": "Send a message1",
+      "webhookId": "8110c866-35ac-42a1-a5ce-0101a6fb1240",
+      "credentials": {
+        "googleApi": {
+          "id": "zq2CwThNQgZR7Mj3",
+          "name": "Google Service Account account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "mendanhamdmp@gmail.com",
+        "toEmail": "={{ $('Tratamento').item.json.email_aluno }}",
+        "subject": "Sua matrícula foi confirmada!",
+        "emailFormat": "text",
+        "text": "=Olá  {{ $('Tratamento').item.json.nome_tratado }}, sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        0
+      ],
+      "id": "0649f0fd-16b4-470e-99be-e276c48d74b7",
+      "name": "Send email",
+      "webhookId": "42d82482-989a-41c8-a1ff-dfe89b6a1cc2",
+      "credentials": {
+        "smtp": {
+          "id": "HeFfk9q0jyJ18kki",
+          "name": "SMTP account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "26052364-8056-46ae-984f-7864ebaa383c",
+              "name": "nome_tratado",
+              "value": "={{ $json.body.nome_completo.replace(/\\b\\w/g, l => l.toUpperCase()) }}",
+              "type": "string"
+            },
+            {
+              "id": "9712fa38-1ecd-4631-93cc-f0517f0ad4e1",
+              "name": "telefone_tratado",
+              "value": "={{ $json.body.telefone.replace(/\\D/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "75045d44-e94b-42b5-aa2b-cbddabc09960",
+              "name": "data_tratada",
+              "value": "={{ $json.body.data_nascimento.split('/').reverse().join('-') }}",
+              "type": "string"
+            },
+            {
+              "id": "a00c8536-6f6e-422a-8c73-ac2e700dbb31",
+              "name": "email_aluno",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "2e574900-4cff-4b88-9d7c-fa6b66fe2f1d",
+              "name": "curso_escolhido",
+              "value": "={{ $json.body.curso }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c709e04e-a4e5-4100-aef5-07afc5f5a040",
+      "name": "Tratamento"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "fMZTGdnLPrS1Xd29"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Email",
+              "keyValue": "={{ $json.email_aluno }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $json.nome_tratado }}",
+            "Email": "={{ $json.email_aluno }}",
+            "Data_Nascimento": "={{ $json.data_tratada }}",
+            "Telefone": "={{ $json.telefone_tratado }}",
+            "Curso": "={{ $json.curso_escolhido }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Data_Nascimento",
+              "displayName": "Data_Nascimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Curso",
+              "displayName": "Curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        640,
+        96
+      ],
+      "id": "81367fb4-0fd1-45bc-9e31-7f9aacbaef46",
+      "name": "Se curso = Business"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "QgBFBgtnsnFh5ztJ",
+          "mode": "id"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Email",
+              "keyValue": "={{ $('Tratamento').item.json.email_aluno }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $json.nome_tratado }}",
+            "Telefone": "={{ $json.telefone_tratado }}",
+            "Email": "={{ $json.email_aluno }}",
+            "Data_Nascimento": "={{ $json.data_tratada }}",
+            "Curso": "={{ $json.curso_escolhido }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Data_Nascimento",
+              "displayName": "Data_Nascimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Curso",
+              "displayName": "Curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        624,
+        -80
+      ],
+      "id": "5861a236-2daf-4c64-b746-87602976a644",
+      "name": "Se curso = Tech"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Tratamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Se curso = Tech",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Se curso = Business",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Tratamento": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Se curso = Tech": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Se curso = Business": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c6377e36-6e07-4ab8-94e9-168a66e33b4c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc0bcbaed5942825d40eb7dd9dcbb6ab0108046af92a3af9d5e04ea54a24a948"
+  },
+  "id": "9iN6qXoYCQ9PTFIu",
+  "tags": []
+}
