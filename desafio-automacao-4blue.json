@@ -84,7 +84,7 @@
         "authentication": "serviceAccount",
         "sendTo": "={{ $('Webhook').item.json.body.email }}",
         "subject": "Sua matrícula foi confirmada!",
-        "message": "=Olá ,{{ $('Tratamento').item.json.nome_tratado }} sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!.",
+        "message": "=Olá,{{ $('Tratamento').item.json.nome_tratado }} sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!.",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
@@ -109,7 +109,7 @@
         "authentication": "serviceAccount",
         "sendTo": "={{ $('Webhook').item.json.body.email }}",
         "subject": "Sua matrícula foi confirmada!",
-        "message": "=Olá ,{{ $('Tratamento').item.json.nome_tratado }} sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!.",
+        "message": "=Olá,{{ $('Tratamento').item.json.nome_tratado }} sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!.",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
@@ -135,7 +135,7 @@
         "toEmail": "={{ $('Tratamento').item.json.email_aluno }}",
         "subject": "Sua matrícula foi confirmada!",
         "emailFormat": "text",
-        "text": "=Olá  {{ $('Tratamento').item.json.nome_tratado }}, sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!",
+        "text": "=Olá {{ $('Tratamento').item.json.nome_tratado }}, sua matrícula no curso {{ $('Tratamento').item.json.curso_escolhido }} foi recebida com sucesso!",
         "options": {}
       },
       "type": "n8n-nodes-base.emailSend",
